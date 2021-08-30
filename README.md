@@ -1,0 +1,1 @@
+This is mostly an experement to learn about using [viper](https://github.com/spf13/viper) and creating a [Prometheus collector](https://pkg.go.dev/github.com/prometheus/client_golang/prometheus/collectors). It is mostly a golang port of my [python version](https://github.com/jaevans/bme280-exporter) that I have running on my Raspberry Pis around the house.
