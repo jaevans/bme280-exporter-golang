@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math"
 	"net/http"
 	"os"
 
@@ -50,7 +51,7 @@ func (c *bmeexporter) Collect(ch chan<- prometheus.Metric) {
 	} else {
 		ch <- prometheus.MustNewConstMetric(c.Temperature,
 			prometheus.GaugeValue,
-			float64(t),
+			math.Round(float64(t)*100)/100,
 			hostname,
 		)
 	}
@@ -62,7 +63,7 @@ func (c *bmeexporter) Collect(ch chan<- prometheus.Metric) {
 	} else {
 		ch <- prometheus.MustNewConstMetric(c.Pressure,
 			prometheus.GaugeValue,
-			float64(p),
+			math.Round(float64(p)*100)/100,
 			hostname,
 		)
 	}
@@ -75,7 +76,7 @@ func (c *bmeexporter) Collect(ch chan<- prometheus.Metric) {
 		} else {
 			ch <- prometheus.MustNewConstMetric(c.Humidity,
 				prometheus.GaugeValue,
-				float64(h1),
+				math.Round(float64(h1)*100)/100,
 				hostname,
 			)
 		}
@@ -93,25 +94,10 @@ func NewBMEExporter() *bmeexporter {
 	}
 }
 
-// var (
-// 	temp = prometheus.NewGauge(prometheus.GaugeOpts{
-// 		Name: "temperature",
-// 		Help: "Current temperature in celsius",
-// 	})
-// 	humidity = prometheus.NewGauge(prometheus.GaugeOpts{
-// 		Name: "humidity",
-// 		Help: "Current realtive humidity",
-// 	})
-// 	pressure = prometheus.NewGauge(prometheus.GaugeOpts{
-// 		Name: "pressure",
-// 		Help: "Current atmospheric pressure in hPa",
-// 	})
-// )
-
 func init() {
 	viper.SetDefault(i2cAddress, "0x76")
 	viper.SetDefault(i2cBus, 1)
-	viper.SetDefault(metricsPort, 9100)
+	viper.SetDefault(metricsPort, 8000)
 	viper.SetDefault(modelName, "BME280")
 	viper.SetDefault(verbose, false)
 
